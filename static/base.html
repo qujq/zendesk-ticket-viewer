@@ -4,10 +4,111 @@
         <title>Ticket Viewer</title>
     </head>
     <body>
-        <div style="font-size: 50px;
-                    font-style:italic;
-                    font-family: 'Times New Roman', Times, serif;">
+        <div style="font-size: 50px; font-family: 'Times New Roman', Times, serif;">
             Ticket Viewer
+        </div>
+        <div id="tickets">
+            <div id="ticket_number">
+
+            </div>
+            <div id="ticket_list">
+
+            </div>
+        </div>
+        <div id="ticket_content">
+            <div id="ticket_requester">
+
+            </div>
+            <div id="ticket_subject">
+
+            </div>
+            <div id="ticket_description">
+
+            </div>
         </div>
     </body>
 </html>
+<script>
+    window.onload = function () {
+        requestBackend()
+    }    
+
+    function requestBackend(){
+        var backend_url = "http://localhost:8000/getTicket?"
+        var response = fetch(backend_url)
+        response.then(res => res.json())
+                .then(function(ticket_list){
+                    console.log(ticket_list)
+                    if(ticket_list.hasOwnProperty("count")){
+                        // display num of tickets
+                        var ticket_number_block = document.getElementById('ticket_number');
+                        var num_ticket = ticket_list.count
+                        ticket_number_block.innerHTML = '<p style="font-size: 30px; font-family: "Times New Roman", Times, serif;">'
+                             + num_ticket + ' total tickets, ' + num_ticket + ' on this page.' + '</p>'
+                        
+                        // display list of ticket subjects
+                        if(ticket_list.hasOwnProperty("tickets")){
+                            var ticket_list_block = document.getElementById('ticket_list');
+                            var ticket_array = ticket_list.tickets
+                            for(var index = 0; index < ticket_array.length; ++index){
+                                ticket_list_block.innerHTML += '<div style="margin-bottom: 5%; background-color: rgb(229, 231, 231); font-size: 25px; font-family: "Times New Roman", Times, serif;">'
+                                    + '<a onClick="displaySelectedTicket(' + ticket_array[index].id + ')">' 
+                                        + ticket_list.tickets[index].subject + '</a>' + '</div>'
+                            }
+                        }
+                        else{
+                            console.log("No tickets")
+                        }
+                        
+                    }
+                    
+                    else{
+                        var ticket_number = document.getElementById('ticket_number');
+                        ticket_number.innerHTML = '<p style="font-color: red; font-size: 30px; font-family: "Times New Roman", Times, serif;">' + 'Some errors occur. We did not get number of tickets' + '</p>'
+                    }
+                    
+                }
+    )}
+
+    function requestUserName(user_id){
+        var backend_url = "http://localhost:8000/getUserName?"
+        backend_url += "user_id=" + user_id
+        var response = fetch(backend_url)
+        response.then(res => res.json())
+                .then(function(user_data){
+                    console.log("user name") 
+                    console.log(user_data)  
+                    console.log("=======") 
+                    if(user_data["user"].hasOwnProperty("name")){
+                        console.log(user_data["user"]["name"])
+                        var ticket_requester_block = document.getElementById("ticket_requester")
+                        ticket_requester_block.innerHTML = "<p> Requester: " + user_data["user"]["name"] + " </p>"
+                    }
+                    else{
+                        var ticket_requester_block = document.getElementById("ticket_requester")
+                        ticket_requester_block.innerHTML = "<p> Requester Not Found </p>"
+                    }                  
+                })
+        
+    }
+
+    function displaySelectedTicket(ticket_id){
+        var backend_url = "http://localhost:8000/getSelectedTicket?"
+        backend_url += "ticket_id=" + ticket_id
+        var response = fetch(backend_url)
+        response.then(res => res.json())
+                .then(function(ticket_content){
+                    console.log(ticket_content)
+                    if(ticket_content["ticket"].hasOwnProperty("requester_id")){
+                        console.log(ticket_content["ticket"]["requester_id"])
+                        requestUserName(ticket_content["ticket"]["requester_id"])
+                    }
+                    else{
+                        console.log("No id")
+                    }                 
+                })
+    }
+</script>
+<style>
+    a:hover{cursor: pointer;}
+</style>
