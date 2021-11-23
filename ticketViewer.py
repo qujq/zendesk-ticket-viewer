@@ -18,6 +18,12 @@ def get_ticket():
     url = 'https://zcczendeskcodingchallenge5191.zendesk.com/api/v2/tickets.json?include=comment_count'
     user = USER
     pwd = PWD
+    arg = request.args
+    page_data = arg.to_dict()
+    page_index = page_data.get("page")
+    per_page = page_data.get("per_page")
+    print(page_index, per_page)
+    url += "&page=" + page_index + "&per_page=" + per_page
 
     # Do the HTTP get request
     response = requests.get(url, auth=(user, pwd))
