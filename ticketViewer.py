@@ -3,8 +3,8 @@ import json
 from geolib import geohash
 from flask import Flask, request, jsonify
 
-USER = 'junquanq@usc.edu'
-PWD = 'K*$!vNc9$4Br.8p'
+USER = ''
+PWD = ''
 
 app = Flask(__name__)
 
@@ -62,9 +62,6 @@ def get_user_name():
 @app.route('/getSelectedTicket', methods=["GET"])
 def get_selected_ticket():
     # Set the request parameters
-    
-    # user = USER
-    # pwd = PWD
 
     arg = request.args
     ticket_data = arg.to_dict()
@@ -88,4 +85,8 @@ def get_selected_ticket():
     return data
 
 if __name__ == '__main__':
+    with open('usernamePassword.json', 'r') as f:
+        usernameAndPassword = json.load(f)
+        USER = usernameAndPassword["username"]
+        PWD = usernameAndPassword["password"]
     app.run(host='127.0.0.1', port=8000, debug=True)
