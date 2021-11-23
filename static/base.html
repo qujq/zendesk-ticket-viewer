@@ -24,6 +24,9 @@
             </div>
             <div id="ticket_description">
 
+            </div>        
+            <div>
+                <a onclick="backToList()">Back to all tickets</a>
             </div>
         </div>
     </body>
@@ -51,7 +54,7 @@
                             var ticket_list_block = document.getElementById('ticket_list');
                             var ticket_array = ticket_list.tickets
                             for(var index = 0; index < ticket_array.length; ++index){
-                                ticket_list_block.innerHTML += '<div style="margin-bottom: 5%; background-color: rgb(229, 231, 231); font-size: 25px; font-family: "Times New Roman", Times, serif;">'
+                                ticket_list_block.innerHTML += '<div style="margin-bottom: 1%; background-color: rgb(229, 231, 231); font-size: 25px; font-family: "Times New Roman", Times, serif;">'
                                     + '<a onClick="displaySelectedTicket(' + ticket_array[index].id + ')">' 
                                         + ticket_list.tickets[index].subject + '</a>' + '</div>'
                             }
@@ -89,7 +92,6 @@
                         ticket_requester_block.innerHTML = "<p> Requester Not Found </p>"
                     }                  
                 })
-        
     }
 
     function displaySelectedTicket(ticket_id){
@@ -98,15 +100,58 @@
         var response = fetch(backend_url)
         response.then(res => res.json())
                 .then(function(ticket_content){
+                    displayDetail()
                     console.log(ticket_content)
                     if(ticket_content["ticket"].hasOwnProperty("requester_id")){
-                        console.log(ticket_content["ticket"]["requester_id"])
                         requestUserName(ticket_content["ticket"]["requester_id"])
                     }
                     else{
                         console.log("No id")
-                    }                 
+                    }
+                    if(ticket_content["ticket"].hasOwnProperty("subject")){
+                        var ticket_subject = ticket_content["ticket"]["subject"];
+                        console.log("ticket_subject", ticket_subject);
+                        var ticket_subject_block = document.getElementById("ticket_subject")
+                        ticket_subject_block.innerHTML = "<p>" + ticket_subject + "</p>";
+                    }
+                    else{
+                        console.log("No subject")
+                    }
+                    if(ticket_content["ticket"].hasOwnProperty("subject")){
+                        var ticket_subject = ticket_content["ticket"]["subject"];
+                        console.log("ticket_subject", ticket_subject);
+                        var ticket_subject_block = document.getElementById("ticket_subject")
+                        ticket_subject_block.innerHTML = "<p>" + ticket_subject + "</p>";
+                    }
+                    else{
+                        console.log("No subject")
+                    }
+                    if(ticket_content["ticket"].hasOwnProperty("description")){
+                        var ticket_description = ticket_content["ticket"]["description"];
+                        console.log("ticket_description", ticket_description);
+                        var ticket_description_block = document.getElementById("ticket_description")
+                        ticket_description_block.innerHTML = "<p>" + ticket_description + "</p>";
+                    }
+                    else{
+                        console.log("No subject")
+                    }
+                    var tickets_block = document.getElementById("tickets")
+                    tickets_block.style.display="none"
                 })
+    }
+
+    function displayDetail(){
+        var tickets_block = document.getElementById("tickets")
+        tickets_block.style.display="none"
+        var ticket_content_block = document.getElementById("ticket_content")
+        ticket_content_block.style.display="block"
+    }
+
+    function backToList(){
+        var tickets_block = document.getElementById("tickets")
+        tickets_block.style.display="block"
+        var ticket_content_block = document.getElementById("ticket_content")
+        ticket_content_block.style.display="none"
     }
 </script>
 <style>
