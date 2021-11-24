@@ -127,7 +127,8 @@
                             for(var index = 0; index < ticket_array.length; ++index){
                                 ticket_list_block.innerHTML += '<div style="margin-bottom: 1%; background-color: rgb(229, 231, 231); font-size: 25px; font-family: "Times New Roman", Times, serif;">'
                                     + '<a onClick="displaySelectedTicket(' + ticket_array[index].id + ')">' 
-                                        + ticket_list.tickets[index].subject + '</a>' + '</div>'
+                                    + '[' + ticket_list.tickets[index].status + '] ' 
+                                    + ticket_list.tickets[index].subject + '</a>' + '</div>'
                             }
                         }
                         else{
