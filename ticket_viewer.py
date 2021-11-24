@@ -1,6 +1,5 @@
 import requests
 import json
-from geolib import geohash
 from flask import Flask, request, jsonify
 
 USER = ''
@@ -18,11 +17,15 @@ def get_ticket():
     url = 'https://zcczendeskcodingchallenge5191.zendesk.com/api/v2/tickets.json?include=comment_count'
     user = USER
     pwd = PWD
+    page_index = '1'
+    per_page = '25'
     arg = request.args
-    page_data = arg.to_dict()
-    page_index = page_data.get("page")
-    per_page = page_data.get("per_page")
-    print(page_index, per_page)
+    args_data = arg.to_dict()
+    if(args_data.__contains__("page")): page_index = args_data.get("page")
+    if(args_data.__contains__("per_page")): per_page = args_data.get("per_page")
+    if(args_data.__contains__("user")): user = args_data.get("user")
+    if(args_data.__contains__("pwd")): pwd = args_data.get("pwd")
+    print(page_index, per_page, user, pwd)
     url += "&page=" + page_index + "&per_page=" + per_page
 
     # Do the HTTP get request
@@ -31,6 +34,7 @@ def get_ticket():
     # Check for HTTP codes other than 200
     if response.status_code != 200:
         print('Status:', response.status_code, 'Problem with the request. Exiting.')
+        print(response.json())
         exit()
 
     # Decode the JSON response into a dictionary and use the data
@@ -68,7 +72,6 @@ def get_user_name():
 @app.route('/getSelectedTicket', methods=["GET"])
 def get_selected_ticket():
     # Set the request parameters
-
     arg = request.args
     ticket_data = arg.to_dict()
     ticket_id = ticket_data.get("ticket_id")
