@@ -9,11 +9,10 @@ class TestTicketViewer(unittest.TestCase):
         with app.test_client() as client:
             with open('usernamePassword.json', 'r') as f:
                 usernameAndPassword = json.load(f)
-                USER = usernameAndPassword["username"]
-                PWD = usernameAndPassword["password"]
-                print(USER, PWD)
-                response = client.get("/getTicket?user=" + USER + "&pwd=" + PWD)
-                print(response.data)
+                username = usernameAndPassword["username"]
+                password = usernameAndPassword["password"]
+                response = client.get("/getTicket?user=" + username + "&pwd=" + password)
+                response_data = json.loads(response.data)
                 assert response.status_code == 200
-                assert "tickets" in str(response.data) and "count" in str(response.data)
+                assert "tickets" in response_data.keys() and "count" in response_data.keys()
               
