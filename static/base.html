@@ -88,7 +88,11 @@
         response.then(res => res.json())
                 .then(function(ticket_list){
                     console.log(ticket_list)
-                    if(ticket_list.hasOwnProperty("count")){
+                    if(ticket_list.hasOwnProperty("error")){
+                        var ticket_number = document.getElementById('ticket_number');
+                        ticket_number.innerHTML = '<p style="color: red; font-size: 30px; font-family: "Times New Roman", Times, serif;">' + "Some errors occur: " + ticket_list.error + '</p>'
+                    }
+                    else if(ticket_list.hasOwnProperty("count")){
                         // display num of tickets
                         var ticket_number_block = document.getElementById('ticket_number');
                         var num_ticket = ticket_list.count
@@ -137,7 +141,7 @@
                     }                    
                     else{
                         var ticket_number = document.getElementById('ticket_number');
-                        ticket_number.innerHTML = '<p style="font-color: red; font-size: 30px; font-family: "Times New Roman", Times, serif;">' + 'Some errors occur. We did not get number of tickets' + '</p>'
+                        ticket_number.innerHTML = '<p style="color: red; font-size: 30px; font-family: "Times New Roman", Times, serif;">' + 'Some errors occur. We did not get number of tickets' + '</p>'
                     }
                     
                 }

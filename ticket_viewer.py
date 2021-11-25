@@ -33,7 +33,12 @@ def get_ticket():
     response = requests.get(url, auth=(user, pwd))
 
     # Check for HTTP codes other than 200
-    if response.status_code != 200:
+    if response.status_code == 401:
+        data = response.json()
+        data = jsonify(data)
+        data.headers['Access-Control-Allow-Origin'] = '*'
+        return data
+    elif response.status_code != 200:
         print('Status:', response.status_code, 'Problem with the request. Exiting.')
         print(response.json())
         exit()
