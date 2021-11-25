@@ -30,18 +30,10 @@ def get_ticket():
     url += "&page=" + page_index + "&per_page=" + per_page
 
     # Do the HTTP get request
-    response = requests.get(url, auth=(user, pwd))
-
-    # Check for HTTP codes other than 200
-    if response.status_code == 401:
-        data = response.json()
-        data = jsonify(data)
-        data.headers['Access-Control-Allow-Origin'] = '*'
-        return data
-    elif response.status_code != 200:
-        print('Status:', response.status_code, 'Problem with the request. Exiting.')
-        print(response.json())
-        exit()
+    try:
+        response = requests.get(url, auth=(user, pwd))
+    except:
+        return request_error()
 
     # Decode the JSON response into a dictionary and use the data
     data = response.json()
@@ -66,7 +58,10 @@ def get_user_name():
     url += str(user_id)
 
     # Do the HTTP get request
-    response = requests.get(url, auth=(user, pwd))
+    try:
+        response = requests.get(url, auth=(user, pwd))
+    except:
+        return request_error()
     
     # Check for HTTP codes other than 200
     if response.status_code != 200:
@@ -96,7 +91,10 @@ def get_selected_ticket():
     url += ticket_id
     
     # Do the HTTP get request
-    response = requests.get(url, auth=(user, pwd))
+    try:
+        response = requests.get(url, auth=(user, pwd))
+    except:
+        return request_error()
 
     # Check for HTTP codes other than 200
     if response.status_code != 200:
@@ -106,6 +104,15 @@ def get_selected_ticket():
     # Decode the JSON response into a dictionary and use the data
     data = response.json()
     data = jsonify(data)
+    data.headers['Access-Control-Allow-Origin'] = '*'
+    return data
+
+def request_error():
+    """
+    Handle cases that requests are not made successfully
+    """
+    response = {"error": "Cannot make request, please check URL"}
+    data = jsonify(response)
     data.headers['Access-Control-Allow-Origin'] = '*'
     return data
 
