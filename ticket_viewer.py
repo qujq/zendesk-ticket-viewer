@@ -10,11 +10,15 @@ def hello():
 
 @app.route('/getTicket', methods=["GET"])
 def get_ticket():
-    url = 'https://zcczendeskcodingchallenge5191.zendesk.com/api/v2/tickets.json?include=comment_count'
+    with open('config.json', 'r') as f:
+        config = json.load(f)
+        USER = config["username"]
+        PWD = config["password"]
+        SUBDOMAIN = config["subdomain"]
+
+    url = SUBDOMAIN + '/api/v2/tickets.json?include=comment_count'
     
     # Set default username, password, page index, and page size
-    user = USER
-    pwd = PWD
     page_index = '1'
     per_page = '25'
 
@@ -23,15 +27,13 @@ def get_ticket():
     args_data = arg.to_dict()
     if args_data.__contains__("page"): page_index = args_data.get("page")
     if args_data.__contains__("per_page"): per_page = args_data.get("per_page")
-    if args_data.__contains__("user"): user = args_data.get("user")
-    if args_data.__contains__("pwd"): pwd = args_data.get("pwd")
 
     # pagination
     url += "&page=" + page_index + "&per_page=" + per_page
 
     # Do the HTTP get request
     try:
-        response = requests.get(url, auth=(user, pwd))
+        response = requests.get(url, auth=(USER, PWD))
     except:
         return request_error()
 
@@ -44,22 +46,23 @@ def get_ticket():
 @app.route('/getUserName', methods=["GET"])
 def get_user_name():
     # Set default username and password
-    user = USER
-    pwd = PWD
+    with open('config.json', 'r') as f:
+        config = json.load(f)
+        USER = config["username"]
+        PWD = config["password"]
+        SUBDOMAIN = config["subdomain"]
 
     # Set the request parameters
     arg = request.args
     args_data = arg.to_dict()
     user_id = args_data.get("user_id")
-    if args_data.__contains__("user"): user = args_data.get("user")
-    if args_data.__contains__("pwd"): pwd = args_data.get("pwd")
 
-    url = 'https://zcczendeskcodingchallenge5191.zendesk.com/api/v2/users/'
+    url = SUBDOMAIN + '/api/v2/users/'
     url += str(user_id)
 
     # Do the HTTP get request
     try:
-        response = requests.get(url, auth=(user, pwd))
+        response = requests.get(url, auth=(USER, PWD))
     except:
         return request_error()
     
@@ -77,22 +80,23 @@ def get_user_name():
 @app.route('/getSelectedTicket', methods=["GET"])
 def get_selected_ticket():
     # Set default username and password
-    user = USER
-    pwd = PWD
+    with open('config.json', 'r') as f:
+        config = json.load(f)
+        USER = config["username"]
+        PWD = config["password"]
+        SUBDOMAIN = config["subdomain"]
 
     # Set the request parameters
     arg = request.args
     args_data = arg.to_dict()
     ticket_id = args_data.get("ticket_id")
-    if args_data.__contains__("user"): user = args_data.get("user")
-    if args_data.__contains__("pwd"): pwd = args_data.get("pwd")
 
-    url = 'https://zcczendeskcodingchallenge5191.zendesk.com/api/v2/tickets/'
+    url = SUBDOMAIN + '/api/v2/tickets/'
     url += ticket_id
     
     # Do the HTTP get request
     try:
-        response = requests.get(url, auth=(user, pwd))
+        response = requests.get(url, auth=(USER, PWD))
     except:
         return request_error()
 
@@ -117,8 +121,4 @@ def request_error():
     return data
 
 if __name__ == '__main__':
-    with open('usernamePassword.json', 'r') as f:
-        usernameAndPassword = json.load(f)
-        USER = usernameAndPassword["username"]
-        PWD = usernameAndPassword["password"]
     app.run(host='127.0.0.1', port=8000, debug=True)
