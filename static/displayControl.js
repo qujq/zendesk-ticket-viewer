@@ -1,14 +1,23 @@
 function show_pervious_page(){
+
+    // This function requests data for previous page
+
     page = page - 1
     requestBackend()
 }
 
 function show_next_page(){
+
+    // This function requests data for next page
+
     page = page + 1
     requestBackend()
 }
 
 function displayDetail(){
+
+    // This function controls details part to display or hide
+
     var tickets_block = document.getElementById("tickets")
     tickets_block.style.display="none"
     var ticket_content_block = document.getElementById("ticket_content")
@@ -16,6 +25,9 @@ function displayDetail(){
 }
 
 function backToList(){
+
+    // This function controls ticket list part to display or hide
+
     var tickets_block = document.getElementById("tickets")
     tickets_block.style.display="block"
     var ticket_content_block = document.getElementById("ticket_content")
@@ -23,6 +35,9 @@ function backToList(){
 }
 
 function pagination(num_ticket){
+
+    // If ticket amount is larger than page size, do pagination
+
     var next_page_button = document.getElementById("next_page")
     var pervious_page_button = document.getElementById("pervious_page")
     // Need page
