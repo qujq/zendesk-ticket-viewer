@@ -18,6 +18,7 @@ class TestTicketViewer(unittest.TestCase):
         with app.test_client() as client: 
             self.response = client.get("/getTicket")
             self.response_data = json.loads(self.response.data)
+        print("Tickets data requested")
     
     def test_get_ticket(self):  
         """
@@ -29,7 +30,7 @@ class TestTicketViewer(unittest.TestCase):
         """      
         assert self.response.status_code == 200, "Status code is not 200"
         assert "tickets" in self.response_data.keys() and "count" in self.response_data.keys(), "Response does not contains one of following keys: tickets, count"
-    
+        print("Test get_ticket() function finished!")
 
     def test_get_selected_ticket(self):
         """
@@ -47,6 +48,7 @@ class TestTicketViewer(unittest.TestCase):
                 selected_ticket_response_data = json.loads(selected_ticket_response.data)
                 assert selected_ticket_response.status_code == 200, "Status code is not 200"
                 assert "ticket" in selected_ticket_response_data.keys(), "Response does not contains key: ticket"
+        print("Test get_selected_ticket() function finished!")
 
     def test_get_user_name(self):
         """
@@ -70,3 +72,4 @@ class TestTicketViewer(unittest.TestCase):
                     user_info_response_data = json.loads(user_info_response.data)
                     assert user_info_response.status_code == 200, "Status code is not 200"
                     assert "user" in user_info_response_data.keys(), "Response does not contains key: user"
+        print("Test get_user_name() function finished!")
