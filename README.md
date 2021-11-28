@@ -11,7 +11,16 @@ pip install -r requirements.txt
 ```
 #### 2. Quick start
 
-First, filling ```config.json``` with subdomain, username and password. Enable API password access in Zendesk Admin Center.
+First, filling ```config.json``` with subdomain, username and password. Enable API password access in Zendesk Admin Center. Example:
+
+```Json
+// config.json
+{
+    "username": "user@example.com",
+    "password": "myPassword",
+    "subdomain": "https://zccMySubdomain.zendesk.com"
+}
+```
 
 Start Flask server:
 
