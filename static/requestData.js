@@ -27,7 +27,12 @@ function requestBackend(){
                 // error occurs
                 if(ticket_list.hasOwnProperty("error")){
                     var ticket_number = document.getElementById('ticket_number');
-                    ticket_number.innerHTML = '<p style="color: red; font-size: 30px; font-family: "Times New Roman", Times, serif;">' + "Some errors occur: " + ticket_list.error + '</p>'
+                    if(ticket_list.error.hasOwnProperty("message")){
+                        ticket_number.innerHTML = '<p style="color: red; font-size: 30px; font-family: "Times New Roman", Times, serif;">' + "Some errors occur: " + ticket_list.error.message + '</p>'
+                    }
+                    else{
+                        ticket_number.innerHTML = '<p style="color: red; font-size: 30px; font-family: "Times New Roman", Times, serif;">' + "Some errors occur: " + ticket_list.error + '</p>'
+                    }
                 }
                 // success
                 else if(ticket_list.hasOwnProperty("count")){
