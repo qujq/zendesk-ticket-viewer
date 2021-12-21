@@ -111,6 +111,11 @@ def get_selected_ticket():
     data.headers['Access-Control-Allow-Origin'] = '*'
     return data
 
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return app.send_static_file('404.html'), 404
+
 def request_error():
     """
     Handle cases that requests are not made successfully
