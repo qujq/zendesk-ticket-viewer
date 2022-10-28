@@ -111,13 +111,17 @@ def get_selected_ticket():
     data.headers['Access-Control-Allow-Origin'] = '*'
     return data
 
+# Ubuntu terminal
 # curl -X POST -H 'Content-Type: application/json' -d @config.json  http://localhost:8000/resource
+
+# Windows CMD
+# curl -X POST -H 'Content-Type=application/json' -d @config.json  http://localhost:8000/resource
 @app.route('/resource', methods = ['POST'])
 def update_text():
     print("post---------")
-    data = request.get_json()
+    data = request.get_json(force=True)
     print(data)
-    print(data.get("username"))
+    print(data.keys())
     print("--------")
     return data.get("username")
 
