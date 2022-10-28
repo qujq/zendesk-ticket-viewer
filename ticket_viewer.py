@@ -111,14 +111,15 @@ def get_selected_ticket():
     data.headers['Access-Control-Allow-Origin'] = '*'
     return data
 
+# curl -X POST -H 'Content-Type: application/json' -d @config.json  http://localhost:8000/resource
 @app.route('/resource', methods = ['POST'])
 def update_text():
     print("post---------")
-    data = request.form
+    data = request.get_json()
     print(data)
-    print(data.keys())
+    print(data.get("username"))
     print("--------")
-    return data
+    return data.get("username")
 
 @app.errorhandler(404)
 def page_not_found(e):
