@@ -111,6 +111,15 @@ def get_selected_ticket():
     data.headers['Access-Control-Allow-Origin'] = '*'
     return data
 
+@app.route('/resource', methods = ['POST'])
+def update_text():
+    print("post---------")
+    data = request.form
+    print(data)
+    print(data.keys())
+    print("--------")
+    return data
+
 @app.errorhandler(404)
 def page_not_found(e):
     # note that we set the 404 status explicitly
